@@ -1,0 +1,16 @@
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.label { font-size: 0.8125rem; color: var(--muted); }
+.value { font-size: 1.75rem; font-variant-numeric: tabular-nums; }
+.info { color: var(--info); }
+.success { color: var(--success); }
+.danger { color: var(--danger); }

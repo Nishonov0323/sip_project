@@ -1,0 +1,17 @@
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.open { color: var(--success); }
+.open .dot { animation: pulse 2s infinite; }
+.closed { color: var(--danger); }
+.connecting { color: var(--warning); }
+
+@keyframes pulse {
+  50% { opacity: 0.35; }
+}

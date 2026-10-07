@@ -1,0 +1,18 @@
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.parties { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.arrow { color: var(--muted); }
+.timer { font-variant-numeric: tabular-nums; font-weight: 600; min-width: 48px; text-align: right; }
+
+@media (max-width: 640px) {
+  .row { grid-template-columns: 1fr auto; }
+}

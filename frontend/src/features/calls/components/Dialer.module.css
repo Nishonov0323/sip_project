@@ -1,0 +1,20 @@
+.dialer { display: flex; flex-direction: column; gap: 14px; max-width: 320px; margin: 0 auto; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 0.8125rem; color: var(--muted); }
+.display { font-size: 1.5rem; text-align: center; letter-spacing: 0.08em; padding: 12px; }
+.pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.key {
+  padding: 14px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.key:hover { background: var(--border); }
+.key:active { transform: scale(0.96); }
+.actions { display: grid; grid-template-columns: 64px 1fr; gap: 10px; }
+.call { background: var(--success); }
+.call:hover:not(:disabled) { background: var(--success); filter: brightness(0.92); }

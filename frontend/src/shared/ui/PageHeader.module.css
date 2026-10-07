@@ -1,0 +1,3 @@
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.header h1 { margin: 0; font-size: 1.5rem; }
+.header p { margin: 4px 0 0; color: var(--muted); }
