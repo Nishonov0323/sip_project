@@ -1,4 +1,4 @@
-import type { Tone } from '@/shared/ui'
+import type { IconName, Tone } from '@/shared/ui'
 import type { Call } from '../types'
 
 export type DisplayStatus = 'ringing' | 'answered' | 'completed' | 'missed'
@@ -10,7 +10,7 @@ export function getDisplayStatus(call: Pick<Call, 'status' | 'answered_at'>): Di
 }
 
 export const STATUS_LABELS: Record<DisplayStatus, string> = {
-  ringing: "Jiringlamoqda",
+  ringing: 'Jiringlamoqda',
   answered: 'Suhbatda',
   completed: 'Yakunlangan',
   missed: 'Javobsiz',
@@ -21,4 +21,11 @@ export const STATUS_TONES: Record<DisplayStatus, Tone> = {
   answered: 'info',
   completed: 'success',
   missed: 'danger',
+}
+
+export const STATUS_ICONS: Record<DisplayStatus, IconName> = {
+  ringing: 'phoneCall',
+  answered: 'phoneCall',
+  completed: 'phoneOutgoing',
+  missed: 'phoneMissed',
 }

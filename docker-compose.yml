@@ -27,15 +27,20 @@ services:
       - ./docker/asterisk/pjsip.conf:/etc/asterisk/pjsip.conf:ro
       - ./docker/asterisk/extensions.conf:/etc/asterisk/extensions.conf:ro
       - ./docker/asterisk/rtp.conf:/etc/asterisk/rtp.conf:ro
+      # Backend yuklagan audio (ijro uchun) va Asterisk yozgan suhbatlar — umumiy volume'lar
+      - sounds:/var/lib/asterisk/sounds/custom
+      - recordings:/var/spool/asterisk/recording
 
   backend:
     build: ./backend
     env_file:
       - ./backend/.env
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./backend:/app
+      - sounds:/data/sounds
+      - recordings:/data/recordings
     depends_on:
       postgres:
         condition: service_healthy
@@ -47,8 +52,8 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_URL: http://localhost:8000/api/v1
-      VITE_WS_URL: ws://localhost:8000/api/v1/ws/events
+      VITE_API_URL: http://localhost:8001/api/v1
+      VITE_WS_URL: ws://localhost:8001/api/v1/ws/events
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -57,3 +62,5 @@ services:
 
 volumes:
   pgdata:
+  sounds:
+  recordings:

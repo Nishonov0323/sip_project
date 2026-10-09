@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CallHistoryTable, useCallHistory } from '@/features/calls'
-import { Button, Card, ErrorMessage, PageHeader } from '@/shared/ui'
+import { Button, Card, ErrorMessage, Icon, PageHeader, Skeleton } from '@/shared/ui'
 import styles from './pages.module.css'
 
 const PAGE_SIZE = 20
@@ -11,13 +11,21 @@ export function HistoryPage() {
 
   return (
     <>
-      <PageHeader title="Qo'ng'iroqlar tarixi" description="Barcha kiruvchi va chiquvchi qo'ng'iroqlar" />
+      <PageHeader
+        title="Qo'ng'iroqlar tarixi"
+        description="Barcha kiruvchi va chiquvchi qo'ng'iroqlar"
+      />
       <Card>
-        {isLoading ? <p className={styles.muted}>Yuklanmoqda...</p> : <CallHistoryTable calls={data} />}
+        {isLoading ? <Skeleton rows={5} /> : <CallHistoryTable calls={data} />}
         <ErrorMessage error={error} />
         <div className={styles.pager}>
-          <Button variant="ghost" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
-            ← Oldingi
+          <Button
+            variant="ghost"
+            icon="chevronLeft"
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+          >
+            Oldingi
           </Button>
           <span className={styles.muted}>{page + 1}-sahifa</span>
           <Button
@@ -25,7 +33,8 @@ export function HistoryPage() {
             disabled={data.length < PAGE_SIZE}
             onClick={() => setPage((p) => p + 1)}
           >
-            Keyingi →
+            Keyingi
+            <Icon name="chevronRight" size={18} />
           </Button>
         </div>
       </Card>

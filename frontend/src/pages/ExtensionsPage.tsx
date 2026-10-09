@@ -1,4 +1,4 @@
-import { ExtensionForm, ExtensionTable } from '@/features/extensions'
+import { ExtensionForm, ExtensionGrid } from '@/features/extensions'
 import { Card, PageHeader } from '@/shared/ui'
 import styles from './pages.module.css'
 
@@ -11,7 +11,7 @@ export function ExtensionsPage() {
           <ExtensionForm />
         </Card>
         <Card title="Barcha raqamlar">
-          <ExtensionTable />
+          <ExtensionGrid />
         </Card>
       </div>
     </>

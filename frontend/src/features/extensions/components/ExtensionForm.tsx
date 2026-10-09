@@ -41,7 +41,9 @@ export function ExtensionForm() {
           aria-label="Ism"
           required
         />
-        <Button loading={create.isPending}>Qo'shish</Button>
+        <Button icon="plus" loading={create.isPending}>
+          Qo'shish
+        </Button>
       </form>
       <ErrorMessage error={create.error} />
     </>

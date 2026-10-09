@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from app.core.config import Settings
+from app.core.exceptions import EndpointOfflineError, SipNotFoundError
 from app.sip.asterisk.call_router import CallRouter
 from app.sip.asterisk.client import AriClient
 from app.sip.asterisk.listener import AriEventListener
@@ -17,10 +18,18 @@ class AsteriskProvider(SipProvider):
     def __init__(self, settings: Settings) -> None:
         super().__init__()
         self._context = settings.sip_dialplan_context
+        self._sound_prefix = settings.asterisk_sound_prefix
         self._client = AriClient(
             settings.ari_base_url, settings.ari_user, settings.ari_password, settings.ari_app
         )
-        self._router = CallRouter(self._client, self._emit)
+        self._router = CallRouter(
+            self._client,
+            self._emit,
+            dial_template=settings.sip_dial_template,
+            call_record_max_seconds=settings.call_record_max_seconds,
+            reply_max_seconds=settings.reply_max_seconds,
+            reply_max_silence=settings.reply_max_silence,
+        )
         self._listener = AriEventListener(
             settings.ari_ws_url,
             settings.ari_app,
@@ -49,7 +58,22 @@ class AsteriskProvider(SipProvider):
                 pass
         await self._client.close()
 
+    async def _ensure_online(self, extension: str) -> None:
+        """Telefon ro'yxatdan o'tmagan bo'lsa, ARI'ning tushunarsiz xatosi o'rniga aniq xabar beradi."""
+        try:
+            endpoint = await self._client.get_endpoint("PJSIP", extension)
+        except SipNotFoundError as exc:
+            raise SipNotFoundError(
+                f"{extension} raqami Asterisk'da sozlanmagan (docker/asterisk/pjsip.conf)"
+            ) from exc
+        if endpoint.get("state") != "online":
+            raise EndpointOfflineError(
+                f"{extension} raqami hozir offlayn. SIP telefonni shu raqam bilan "
+                "ro'yxatdan o'tkazing (server: localhost:5060)"
+            )
+
     async def originate(self, from_extension: str, to_number: str) -> str:
+        await self._ensure_online(from_extension)
         channel = await self._client.originate_via_dialplan(
             endpoint=f"PJSIP/{from_extension}",
             extension=to_number,
@@ -57,6 +81,13 @@ class AsteriskProvider(SipProvider):
             caller_id=from_extension,
         )
         return channel["id"]
+
+    async def originate_playback(self, to_number: str, audio_key: str, audio_name: str) -> str:
+        # Faqat PJSIP abonentlari uchun oldindan tekshiramiz (demo/Local kanallarda emas).
+        if self._router.endpoint_for(to_number).startswith("PJSIP/"):
+            await self._ensure_online(to_number)
+        media = f"sound:{self._sound_prefix}/{audio_key}"
+        return await self._router.start_playback_call(to_number, media, audio_name)
 
     async def hangup(self, channel_id: str) -> None:
         await self._client.hangup(channel_id)

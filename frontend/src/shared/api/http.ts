@@ -20,11 +20,13 @@ async function readErrorMessage(res: Response): Promise<string> {
 }
 
 export async function http<T>(path: string, init?: RequestInit): Promise<T> {
+  // FormData bo'lsa, brauzer Content-Type'ni (boundary bilan) o'zi qo'yadi.
+  const json = !(init?.body instanceof FormData)
   let res: Response
   try {
     res = await fetch(`${env.apiUrl}${path}`, {
       ...init,
-      headers: { 'Content-Type': 'application/json', ...init?.headers },
+      headers: { ...(json && { 'Content-Type': 'application/json' }), ...init?.headers },
     })
   } catch {
     throw new ApiError("Serverga ulanib bo'lmadi", 0)

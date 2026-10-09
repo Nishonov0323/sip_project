@@ -8,6 +8,7 @@ class SipEventType(StrEnum):
     CALL_STARTED = "call_started"
     CALL_ANSWERED = "call_answered"
     CALL_ENDED = "call_ended"
+    RECORDING_READY = "recording_ready"
 
 
 @dataclass(slots=True)
@@ -18,6 +19,9 @@ class SipEvent:
     channel_id: str
     caller: str = ""
     callee: str = ""
+    kind: str = "call"  # "call" | "playback"
+    audio_name: str = ""
+    recording_name: str = ""
     timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     def to_dict(self) -> dict:

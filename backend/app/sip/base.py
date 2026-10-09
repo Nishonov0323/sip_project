@@ -37,6 +37,13 @@ class SipProvider(ABC):
         """Qo'ng'iroq boshlaydi va channel_id qaytaradi."""
 
     @abstractmethod
+    async def originate_playback(self, to_number: str, audio_key: str, audio_name: str) -> str:
+        """Raqamga qo'ng'iroq qiladi, javob berilgach audioni ijro etadi va javobni yozadi.
+
+        `audio_key` — audio fayl nomi (kengaytmasiz). channel_id qaytaradi.
+        """
+
+    @abstractmethod
     async def hangup(self, channel_id: str) -> None: ...
 
     @abstractmethod

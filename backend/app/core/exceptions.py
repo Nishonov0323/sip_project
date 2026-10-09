@@ -21,9 +21,38 @@ class ConflictError(AppError):
     code = "conflict"
 
 
+class InvalidFileError(AppError):
+    status_code = 422
+    code = "invalid_file"
+
+
+class FileTooLargeError(AppError):
+    status_code = 413
+    code = "file_too_large"
+
+
+class ServiceUnavailableError(AppError):
+    status_code = 503
+    code = "service_unavailable"
+
+
 class SipProviderError(AppError):
     status_code = 502
     code = "sip_provider_error"
+
+
+class SipNotFoundError(SipProviderError):
+    """SIP serverda resurs (kanal, endpoint) topilmadi."""
+
+    status_code = 404
+    code = "not_found"
+
+
+class EndpointOfflineError(AppError):
+    """Qo'ng'iroq qiluvchi raqam SIP serverda ro'yxatdan o'tmagan (telefon ulanmagan)."""
+
+    status_code = 409
+    code = "endpoint_offline"
 
 
 def register_exception_handlers(app: FastAPI) -> None:

@@ -1,5 +1,18 @@
+import { Icon, type IconName } from './Icon'
 import styles from './EmptyState.module.css'
 
-export function EmptyState({ children }: { children: string }) {
-  return <p className={styles.empty}>{children}</p>
+interface Props {
+  children: string
+  icon?: IconName
+}
+
+export function EmptyState({ children, icon = 'phone' }: Props) {
+  return (
+    <div className={styles.empty}>
+      <span className={styles.icon}>
+        <Icon name={icon} size={22} />
+      </span>
+      <p>{children}</p>
+    </div>
+  )
 }

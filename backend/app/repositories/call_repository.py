@@ -8,6 +8,9 @@ class CallRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
+    async def get(self, call_id: int) -> Call | None:
+        return await self._session.get(Call, call_id)
+
     async def get_by_channel_id(self, channel_id: str) -> Call | None:
         result = await self._session.execute(select(Call).where(Call.channel_id == channel_id))
         return result.scalar_one_or_none()

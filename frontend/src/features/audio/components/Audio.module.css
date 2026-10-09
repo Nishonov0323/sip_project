@@ -1,0 +1,40 @@
+.drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 20px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.drop:hover,
+.dragging { border-color: var(--primary); background: var(--info-bg); }
+.dropIcon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--gradient); color: #fff; box-shadow: var(--glow); }
+.hint { color: var(--muted); font-size: 0.8125rem; }
+
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.item {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) minmax(260px, 1.4fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+.chip { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--info-bg); color: var(--info); }
+.info { display: flex; flex-direction: column; min-width: 0; }
+.info strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.info small { color: var(--muted); }
+.player { min-width: 0; }
+.useLink { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 0.875rem; }
+
+@media (max-width: 1100px) {
+  .item { grid-template-columns: auto 1fr auto auto; }
+  .player { grid-column: 1 / -1; grid-row: 2; }
+}

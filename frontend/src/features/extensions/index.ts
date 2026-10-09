@@ -1,4 +1,5 @@
 export { ExtensionForm } from './components/ExtensionForm'
-export { ExtensionTable } from './components/ExtensionTable'
+export { ExtensionGrid } from './components/ExtensionGrid'
+export { useExtensionName } from './hooks/useExtensionName'
 export { useExtensions } from './hooks/useExtensions'
 export type { Extension } from './types'

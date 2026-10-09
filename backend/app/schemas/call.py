@@ -10,6 +10,11 @@ class OriginateRequest(BaseModel):
     to_number: str = Field(pattern=NUMBER_PATTERN, examples=["1002"])
 
 
+class PlaybackRequest(BaseModel):
+    to_number: str = Field(pattern=NUMBER_PATTERN, examples=["1002"])
+    audio_id: int
+
+
 class OriginateResponse(BaseModel):
     channel_id: str
 
@@ -26,6 +31,11 @@ class CallRead(BaseModel):
     answered_at: datetime | None
     ended_at: datetime | None
     duration_seconds: int
+    kind: str
+    audio_name: str | None
+    has_recording: bool
+    transcript: str | None
+    transcript_status: str
 
 
 class ActiveChannelRead(BaseModel):

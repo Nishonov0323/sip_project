@@ -19,6 +19,24 @@ class Settings(BaseSettings):
     sip_provider: str = "asterisk"
     sip_dialplan_context: str = "from-internal"
 
+    # Qabul qiluvchiga qo'ng'iroq qilish shabloni ({number} o'rniga raqam qo'yiladi)
+    sip_dial_template: str = "PJSIP/{number}"
+
+    # Audio fayllar va yozuvlar (Asterisk konteyneri bilan umumiy volume'lar)
+    sounds_dir: str = "/data/sounds"
+    recordings_dir: str = "/data/recordings"
+    asterisk_sound_prefix: str = "custom"  # Asterisk'da: /var/lib/asterisk/sounds/custom
+    max_upload_mb: int = 25
+    reply_max_seconds: int = 60  # Avto-qo'ng'iroqda javobni yozish: eng ko'pi bilan
+    reply_max_silence: int = 4  # shuncha soniya jimlikdan keyin yozish to'xtaydi
+    call_record_max_seconds: int = 3600
+
+    # Matnga o'tkazish (OpenAI-mos /audio/transcriptions API: OpenAI, Groq, lokal Whisper server)
+    stt_base_url: str = "https://api.openai.com/v1"
+    stt_api_key: str = ""
+    stt_model: str = "whisper-1"
+    stt_language: str = "uz"
+
     # Asterisk ARI
     ari_base_url: str = "http://asterisk:8088/ari"
     ari_ws_url: str = "ws://asterisk:8088/ari/events"

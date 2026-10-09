@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from '@/shared/layout/AppLayout'
+import { AudioPage } from '@/pages/AudioPage'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { DialerPage } from '@/pages/DialerPage'
 import { ExtensionsPage } from '@/pages/ExtensionsPage'
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       { path: 'dialer', element: <DialerPage /> },
+      { path: 'audio', element: <AudioPage /> },
       { path: 'history', element: <HistoryPage /> },
       { path: 'extensions', element: <ExtensionsPage /> },
       { path: '*', element: <NotFoundPage /> },

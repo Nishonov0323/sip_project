@@ -1,14 +1,29 @@
+import { useCallEvents } from '@/features/realtime'
 import { formatDuration } from '@/shared/lib/format'
+import { Icon, type IconName } from '@/shared/ui'
 import { useCallHistory } from '../hooks/useCalls'
 import { computeTodayStats } from '../lib/stats'
-import { useCallEvents } from '@/features/realtime'
 import styles from './CallStatsGrid.module.css'
 
-function Stat({ label, value, tone }: { label: string; value: string | number; tone?: string }) {
+type StatTone = 'info' | 'primary' | 'success' | 'danger' | 'neutral'
+
+interface StatProps {
+  label: string
+  value: string | number
+  icon: IconName
+  tone: StatTone
+}
+
+function Stat({ label, value, icon, tone }: StatProps) {
   return (
     <div className={styles.stat}>
-      <span className={styles.label}>{label}</span>
-      <strong className={`${styles.value} ${tone ? styles[tone] : ''}`}>{value}</strong>
+      <span className={`${styles.chip} ${styles[tone]}`}>
+        <Icon name={icon} size={20} />
+      </span>
+      <div>
+        <span className={styles.label}>{label}</span>
+        <strong className={styles.value}>{value}</strong>
+      </div>
     </div>
   )
 }
@@ -20,11 +35,16 @@ export function CallStatsGrid() {
 
   return (
     <div className={styles.grid}>
-      <Stat label="Faol qo'ng'iroqlar" value={liveCalls.length} tone="info" />
-      <Stat label="Bugun jami" value={stats.total} />
-      <Stat label="Javob berilgan" value={stats.answered} tone="success" />
-      <Stat label="Javobsiz" value={stats.missed} tone="danger" />
-      <Stat label="O'rtacha davomiylik" value={formatDuration(stats.avgDurationSeconds)} />
+      <Stat label="Faol qo'ng'iroqlar" value={liveCalls.length} icon="activity" tone="info" />
+      <Stat label="Bugun jami" value={stats.total} icon="phone" tone="primary" />
+      <Stat label="Javob berilgan" value={stats.answered} icon="phoneOutgoing" tone="success" />
+      <Stat label="Javobsiz" value={stats.missed} icon="phoneMissed" tone="danger" />
+      <Stat
+        label="O'rtacha davomiylik"
+        value={formatDuration(stats.avgDurationSeconds)}
+        icon="clock"
+        tone="neutral"
+      />
     </div>
   )
 }

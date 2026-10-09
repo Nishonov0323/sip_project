@@ -1,8 +1,9 @@
-.stack { display: flex; flex-direction: column; gap: 20px; }
-.split { display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 20px; align-items: start; }
-.muted { color: var(--muted); }
-.pager { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+.stack { display: flex; flex-direction: column; gap: 22px; }
+.split { display: grid; grid-template-columns: minmax(300px, 400px) 1fr; gap: 22px; align-items: start; }
+.muted { color: var(--muted); font-size: 0.875rem; }
+.pager { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
+.more { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .split { grid-template-columns: 1fr; }
 }

@@ -1,0 +1,27 @@
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: hsl(var(--h) 80% 55% / 16%);
+  color: hsl(var(--h) 70% var(--avatar-l));
+  font-size: calc(var(--size) * 0.36);
+  font-weight: 700;
+  user-select: none;
+}
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--h) 80% 55% / 55%);
+  animation: ring 1.6s ease-out infinite;
+}
+
+@keyframes ring {
+  from { transform: scale(0.9); opacity: 1; }
+  to { transform: scale(1.35); opacity: 0; }
+}

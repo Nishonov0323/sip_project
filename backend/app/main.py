@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,16 +9,28 @@ from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.services.call_event_service import CallEventService
+from app.services.transcription_service import TranscriptionService
 from app.sip.factory import create_sip_provider
 from app.ws.manager import ws_manager
+
+
+def prepare_storage() -> None:
+    """Audio va yozuv papkalari. Yozuvlarni Asterisk (boshqa foydalanuvchi) yozadi — shuning uchun 777."""
+    Path(settings.sounds_dir).mkdir(parents=True, exist_ok=True)
+    recordings = Path(settings.recordings_dir)
+    recordings.mkdir(parents=True, exist_ok=True)
+    recordings.chmod(0o777)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_logging()
+    prepare_storage()
+    transcriber = TranscriptionService(settings, ws_manager)
     provider = create_sip_provider(settings)
-    provider.subscribe(CallEventService(ws_manager).handle)
+    provider.subscribe(CallEventService(ws_manager, transcriber).handle)
     app.state.sip_provider = provider
+    app.state.transcriber = transcriber
     await provider.start()
     try:
         yield
