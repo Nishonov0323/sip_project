@@ -58,3 +58,14 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+input[type='checkbox'] {
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; font-weight: 600; color: var(--muted); }
+label.field > :not(span) { font-weight: 400; color: var(--text); }

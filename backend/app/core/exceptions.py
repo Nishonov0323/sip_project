@@ -21,6 +21,11 @@ class ConflictError(AppError):
     code = "conflict"
 
 
+class BadRequestError(AppError):
+    status_code = 400
+    code = "bad_request"
+
+
 class InvalidFileError(AppError):
     status_code = 422
     code = "invalid_file"

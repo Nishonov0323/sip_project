@@ -4,6 +4,7 @@ export type SipEventType =
   | 'call_ended'
   | 'recording_ready'
   | 'transcript_updated'
+  | 'campaign_updated'
 
 /** Backend `SipEvent.to_dict()` formati (transcript_updated'da faqat type va channel_id bor). */
 export interface SipEvent {

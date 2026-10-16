@@ -6,6 +6,8 @@ export type LiveCallMap = Record<string, LiveCall>
 export function applyEvent(calls: LiveCallMap, event: SipEvent): LiveCallMap {
   const { [event.channel_id]: existing, ...rest } = calls
 
+  if (event.type === 'campaign_updated') return calls
+
   switch (event.type) {
     case 'call_started':
     case 'call_answered': {

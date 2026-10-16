@@ -36,7 +36,7 @@ services:
     env_file:
       - ./backend/.env
     ports:
-      - "8001:8000"
+      - "8002:8000"
     volumes:
       - ./backend:/app
       - sounds:/data/sounds
@@ -52,8 +52,8 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_URL: http://localhost:8001/api/v1
-      VITE_WS_URL: ws://localhost:8001/api/v1/ws/events
+      VITE_API_URL: http://localhost:8002/api/v1
+      VITE_WS_URL: ws://localhost:8002/api/v1/ws/events
     volumes:
       - ./frontend:/app
       - /app/node_modules

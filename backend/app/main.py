@@ -9,6 +9,7 @@ from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.services.call_event_service import CallEventService
+from app.services.campaign_service import CampaignRunner
 from app.services.transcription_service import TranscriptionService
 from app.sip.factory import create_sip_provider
 from app.ws.manager import ws_manager
@@ -31,10 +32,14 @@ async def lifespan(app: FastAPI):
     provider.subscribe(CallEventService(ws_manager, transcriber).handle)
     app.state.sip_provider = provider
     app.state.transcriber = transcriber
+    runner = CampaignRunner(provider, ws_manager, settings)
+    app.state.campaign_runner = runner
     await provider.start()
+    await runner.recover()
     try:
         yield
     finally:
+        await runner.shutdown()
         await provider.stop()
 
 

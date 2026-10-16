@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     reply_max_silence: int = 4  # shuncha soniya jimlikdan keyin yozish to'xtaydi
     call_record_max_seconds: int = 3600
 
+    # Ommaviy qo'ng'iroq (kampaniya)
+    campaign_concurrency: int = 2  # bir vaqtda nechta qo'ng'iroq
+    campaign_call_timeout: int = 300  # bitta qo'ng'iroq uchun eng ko'pi bilan shuncha soniya
+
     # Matnga o'tkazish (OpenAI-mos /audio/transcriptions API: OpenAI, Groq, lokal Whisper server)
     stt_base_url: str = "https://api.openai.com/v1"
     stt_api_key: str = ""

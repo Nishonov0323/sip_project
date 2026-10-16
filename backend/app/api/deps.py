@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import SessionLocal
 from app.services.audio_service import AudioService
 from app.services.call_service import CallService
+from app.services.campaign_service import CampaignRunner, CampaignService
+from app.services.contact_service import ContactService
 from app.services.extension_service import ExtensionService
 from app.services.transcription_service import TranscriptionService
 from app.sip.base import SipProvider
@@ -49,3 +51,21 @@ def get_extension_service(session: SessionDep) -> ExtensionService:
 CallServiceDep = Annotated[CallService, Depends(get_call_service)]
 ExtensionServiceDep = Annotated[ExtensionService, Depends(get_extension_service)]
 AudioServiceDep = Annotated[AudioService, Depends(get_audio_service)]
+
+
+def get_campaign_runner(request: Request) -> CampaignRunner:
+    return request.app.state.campaign_runner
+
+
+def get_contact_service(session: SessionDep) -> ContactService:
+    return ContactService(session)
+
+
+def get_campaign_service(
+    session: SessionDep, runner: Annotated[CampaignRunner, Depends(get_campaign_runner)]
+) -> CampaignService:
+    return CampaignService(session, runner)
+
+
+ContactServiceDep = Annotated[ContactService, Depends(get_contact_service)]
+CampaignServiceDep = Annotated[CampaignService, Depends(get_campaign_service)]
