@@ -10,7 +10,7 @@ Asterisk asosidagi SIP telefoniya uchun veb-boshqaruv paneli. Ichki raqamlar o'r
 - **Audio kutubxona** — MP3/WAV/OGG/M4A/FLAC yuklash; avtomatik 8 kHz mono WAV ga o'tkaziladi.
 - **Yozuvlar** — barcha suhbatlar (ikki tomon aralash) yoziladi, tarixda to'lqin shakli bilan tinglanadi va yuklab olinadi.
 - **Transkripsiya** — yozuvni Whisper (OpenAI-mos API) orqali matnga o'tkazish.
-- **Raqamlar (extensions)** boshqaruvi, yorug'/qorong'i rejim, mobilga moslashgan interfeys.
+- **SIP hisoblar (extensions)** boshqaruvi, yorug'/qorong'i rejim, mobilga moslashgan interfeys.
 
 ## Arxitektura
 
@@ -104,12 +104,12 @@ Batafsil: [backend/README.md](backend/README.md) · [frontend/README.md](fronten
 
 | Fayl | Vazifasi |
 |---|---|
-| `pjsip.conf` | SIP raqamlar (1001, 1002) va ularning parollari |
+| `pjsip.conf` | Transport va shablonlar; hisoblarni `pjsip.d/accounts.conf` dan oladi (uni backend yozadi) |
 | `ari.conf` / `http.conf` | ARI foydalanuvchisi (`sipapp`) va HTTP server |
 | `extensions.conf` | `from-internal`: har qanday raqam → `Stasis(sip_app,dial,...)`; `demo-answer`: demo abonent |
 | `rtp.conf` | RTP port oralig'i (10000–10100) |
 
-Yangi SIP raqam qo'shish uchun `pjsip.conf` ga endpoint/auth/aor bloklarini qo'shing va Asterisk'ni qayta ishga tushiring; keyin raqamni saytdagi "Raqamlar" bo'limida ham yarating (ikkalasi hozircha sinxronlanmaydi).
+Yangi SIP raqam qo'shish uchun saytdagi "SIP hisoblar" bo'limidan foydalaning: backend hisobni bazaga saqlaydi, parol yaratadi, `accounts.conf` ni yozadi va Asterisk'ni (`res_pjsip` reload) qayta yuklaydi — qo'lda hech narsa tahrirlash va qayta ishga tushirish kerak emas. Mavjud 1001/1002 parollari saqlanib qolgan.
 
 ## Tez-tez uchraydigan muammolar
 

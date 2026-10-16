@@ -31,3 +31,10 @@
 @media (max-width: 640px) {
   .form { grid-template-columns: 1fr; }
 }
+
+.hint { margin: 0 0 14px; color: var(--muted); font-size: 0.875rem; line-height: 1.5; }
+.hint b { color: var(--text); }
+.number { display: flex; align-items: center; gap: 8px; }
+.secret { display: flex; align-items: center; gap: 2px; margin: 2px 0; }
+.secret code { font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--text); margin-right: 4px; }
+.actions { display: flex; flex-direction: column; gap: 4px; }

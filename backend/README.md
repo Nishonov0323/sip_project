@@ -87,6 +87,7 @@ Lokal ishga tushirganda `DATABASE_URL`, `ARI_*` manzillarini `postgres` / `aster
 | `MAX_UPLOAD_MB` | `25` | Audio fayl chegarasi |
 | `REPLY_MAX_SECONDS` / `REPLY_MAX_SILENCE` | `60` / `4` | Avto-qo'ng'iroqda javobni yozish chegarasi |
 | `CALL_RECORD_MAX_SECONDS` | `3600` | Oddiy suhbat yozuvi chegarasi |
+| `CAMPAIGN_CONCURRENCY` / `CAMPAIGN_CALL_TIMEOUT` | `2` / `300` | Ommaviy qo'ng'iroqda bir vaqtdagi qo'ng'iroqlar soni / bitta qo'ng'iroq chegarasi (s) |
 | `STT_API_KEY` | _(bo'sh)_ | Bo'sh bo'lsa, transkripsiya **o'chiq** |
 | `STT_BASE_URL` / `STT_MODEL` / `STT_LANGUAGE` | OpenAI / `whisper-1` / `uz` | Groq yoki lokal Whisper ham mumkin |
 
@@ -106,18 +107,30 @@ Prefiks: `/api/v1`. Xatolar bir xil formatda: `{"error": {"code": "...", "messag
 | Metod | Yo'l | Tavsif |
 |---|---|---|
 | GET | `/health` | Salomatlik |
-| GET / POST | `/extensions` | Raqamlar ro'yxati / yaratish (409 — takroriy) |
+| GET / POST | `/extensions` | SIP hisoblar ro'yxati (parol, online holati bilan) / yaratish — parol avtomatik, Asterisk'ga yoziladi (409 — takroriy) |
+| POST | `/extensions/{id}/reset-password` | Yangi parol yaratadi va Asterisk'ga yozadi |
 | DELETE | `/extensions/{id}` | O'chirish |
 | POST | `/calls/originate` | `{from_extension, to_number}` — qo'ng'iroq boshlash |
 | POST | `/calls/playback` | `{to_number, audio_id}` — avto-qo'ng'iroq |
 | POST | `/calls/{channel_id}/hangup` | Uzish (404 — kanal yo'q) |
 | GET | `/calls/active` | Faol kanallar |
-| GET | `/calls?limit=&offset=` | Tarix |
+| GET | `/calls` | Tarix: `limit`, `offset`; filtrlar: `q` (raqam/audio nomi/matn), `status` (`ringing`, `answered`, `completed`, `missed`), `kind` (`call`, `playback`), `has_recording`, `created_from`, `created_before` (ISO vaqt) |
 | GET | `/calls/{id}/recording` | Yozuv (`audio/wav`, Range qo'llab-quvvatlanadi) |
 | POST | `/calls/{id}/transcribe` | Matnga o'tkazishni boshlash |
 | GET / POST | `/audio` | Ro'yxat / yuklash (`multipart/form-data`: `file`, `name`) |
 | GET | `/audio/{id}/file` | Audioni olish |
 | DELETE | `/audio/{id}` | O'chirish |
+| GET / POST | `/contact-groups` | Guruhlar (soni bilan) / yaratish |
+| DELETE | `/contact-groups/{id}` | Guruhni o'chirish (kontaktlar guruhsiz qoladi) |
+| GET | `/contacts?q=&group_id=&profession=&limit=&offset=` | Filtr: `group_id` va `profession` takrorlanishi mumkin; javob `{items, total}` |
+| GET | `/contacts/professions` | Mavjud kasblar (filtr uchun) |
+| POST | `/contacts` | Kontakt qo'shish (raqam normallashtiriladi) |
+| PATCH / DELETE | `/contacts/{id}` | Tahrirlash / o'chirish |
+| POST | `/contacts/assign-group` | `{contact_ids, group_id}` — ommaviy guruhga o'tkazish |
+| POST | `/contacts/import` | CSV (`ism,telefon,guruh,kasb`), mavjud raqamlar yangilanadi |
+| GET / POST | `/campaigns` | Ommaviy qo'ng'iroqlar / boshlash: `{audio_id, name?, contact_ids \| filter}` |
+| GET | `/campaigns/{id}` | Natija: har bir kontakt holati, yozuv va matn |
+| POST | `/campaigns/{id}/cancel` | To'xtatish |
 | WS | `/ws/events` | Jonli hodisalar |
 
 Muhim xato kodlari: `endpoint_offline` (409 — telefon ro'yxatdan o'tmagan), `invalid_file` (422), `file_too_large` (413), `service_unavailable` (503 — STT sozlanmagan), `sip_provider_error` (502).
@@ -133,6 +146,7 @@ Har bir xabar JSON, `type` maydoni bilan:
 | `call_ended` | Tugadi | shu |
 | `recording_ready` | Yozuv tayyor | `recording_name` |
 | `transcript_updated` | Transkripsiya holati o'zgardi | faqat `channel_id` |
+| `campaign_updated` | Ommaviy qo'ng'iroq progressi o'zgardi | faqat `campaign_id` |
 
 ## Qo'ng'iroq oqimlari
 
@@ -165,5 +179,5 @@ Hozircha faqat `/health` testi bor; servislar va router uchun testlar yozilishi 
 
 - **Autentifikatsiya yo'q** — hamma endpoint (jumladan yozuvlar) ochiq.
 - `CallRouter` holati (`_by_bridge`, `_playbacks`, ...) xotirada saqlanadi: bir nechta worker yoki qayta ishga tushirishda yo'qoladi. Restartdan keyin `ringing`/`answered` holatdagi yozuvlar `ended` bo'lmay qolishi mumkin.
-- `Extension` jadvali Asterisk'ning `pjsip.conf` fayli bilan sinxronlanmaydi.
+- SIP hisoblar faqat sayt orqali boshqariladi: `pjsip.conf` ga qo'lda endpoint yozmang, `accounts.conf` har safar bazadan qayta yoziladi.
 - Yozuvlarni eskirgach tozalash siyosati yo'q.

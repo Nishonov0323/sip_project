@@ -44,8 +44,10 @@ Docker Compose'da backend `8002` portda, shuning uchun qiymatlar `docker-compose
 | `/` | Bosh sahifa | Statistika, faol qo'ng'iroqlar, so'nggi qo'ng'iroqlar |
 | `/dialer` | Qo'ng'iroq | Tab: oddiy qo'ng'iroq (dialpad) yoki avto-qo'ng'iroq (audio). `?tab=auto&audio=<id>` |
 | `/audio` | Audio | Yuklash (drag & drop), ro'yxat, tinglash, o'chirish |
-| `/history` | Tarix | Sahifalangan jadval; qatorni bossangiz yozuv pleeri va transkripsiya |
-| `/extensions` | Raqamlar | Extension'lar boshqaruvi |
+| `/history` | Tarix | Qidiruv (raqam, audio nomi, matn), holat/tur/yozuv va sana filtrlari; sahifalangan jadval; qatorni bossangiz yozuv pleeri va transkripsiya |
+| `/extensions` | SIP hisoblar | Extension'lar boshqaruvi |
+| `/contacts` | Kontaktlar | Guruh/kasb/qidiruv filtri, belgilash, guruhga o'tkazish, CSV import, tanlanganlarga audio bilan qo'ng'iroq |
+| `/campaigns`, `/campaigns/:id` | Ommaviy qo'ng'iroqlar | Progress, har bir kontakt holati, yozuv va transkripsiya |
 
 ## Papka tuzilmasi
 
@@ -86,7 +88,7 @@ src/
 
 ## Realtime
 
-`CallEventsProvider` backend `WS /ws/events` ga ulanadi (uzilsa, 1 s dan 15 s gacha oshib boruvchi kutish bilan qayta ulanadi). Hodisalar `applyEvent` (sof funksiya) orqali "faol qo'ng'iroqlar" ro'yxatiga qo'llanadi. Hodisa turlari: `call_started`, `call_answered`, `call_ended`, `recording_ready`, `transcript_updated`.
+`CallEventsProvider` backend `WS /ws/events` ga ulanadi (uzilsa, 1 s dan 15 s gacha oshib boruvchi kutish bilan qayta ulanadi). Hodisalar `applyEvent` (sof funksiya) orqali "faol qo'ng'iroqlar" ro'yxatiga qo'llanadi. Hodisa turlari: `call_started`, `call_answered`, `call_ended`, `recording_ready`, `transcript_updated`, `campaign_updated`.
 
 ## Audio pleer
 

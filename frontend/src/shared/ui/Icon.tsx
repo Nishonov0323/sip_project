@@ -171,6 +171,31 @@ const ICONS = {
     </>
   ),
   moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />,
+  copy: (
+    <>
+      <rect width="14" height="14" x="8" y="8" rx="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </>
+  ),
+  eye: (
+    <>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  eyeOff: (
+    <>
+      <path d="M9.9 4.24A9.1 9.1 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-2.2 3.2M6.6 6.6A16.5 16.5 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6" />
+      <path d="M14.1 14.1a3 3 0 1 1-4.2-4.2" />
+      <line x1="2" x2="22" y1="2" y2="22" />
+    </>
+  ),
+  refresh: (
+    <>
+      <path d="M21 12a9 9 0 1 1-3-6.7L21 8" />
+      <path d="M21 3v5h-5" />
+    </>
+  ),
 } satisfies Record<string, ReactNode>
 
 export type IconName = keyof typeof ICONS

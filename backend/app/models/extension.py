@@ -12,3 +12,4 @@ class Extension(TimestampMixin, Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     number: Mapped[str] = mapped_column(String(32), unique=True, index=True)
     display_name: Mapped[str] = mapped_column(String(128))
+    password: Mapped[str] = mapped_column(String(64), default="")

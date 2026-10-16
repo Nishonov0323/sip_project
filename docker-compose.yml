@@ -25,6 +25,7 @@ services:
       - ./docker/asterisk/http.conf:/etc/asterisk/http.conf:ro
       - ./docker/asterisk/ari.conf:/etc/asterisk/ari.conf:ro
       - ./docker/asterisk/pjsip.conf:/etc/asterisk/pjsip.conf:ro
+      - pjsip:/etc/asterisk/pjsip.d
       - ./docker/asterisk/extensions.conf:/etc/asterisk/extensions.conf:ro
       - ./docker/asterisk/rtp.conf:/etc/asterisk/rtp.conf:ro
       # Backend yuklagan audio (ijro uchun) va Asterisk yozgan suhbatlar — umumiy volume'lar
@@ -41,6 +42,7 @@ services:
       - ./backend:/app
       - sounds:/data/sounds
       - recordings:/data/recordings
+      - pjsip:/data/pjsip
     depends_on:
       postgres:
         condition: service_healthy
@@ -64,3 +66,4 @@ volumes:
   pgdata:
   sounds:
   recordings:
+  pjsip:

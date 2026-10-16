@@ -16,4 +16,6 @@ class ExtensionRead(BaseModel):
     id: int
     number: str
     display_name: str
+    password: str
     created_at: datetime
+    online: bool = False

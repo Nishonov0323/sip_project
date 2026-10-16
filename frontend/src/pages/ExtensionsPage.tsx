@@ -5,12 +5,12 @@ import styles from './pages.module.css'
 export function ExtensionsPage() {
   return (
     <>
-      <PageHeader title="Raqamlar" description="Ichki SIP raqamlar (extensions) boshqaruvi" />
+      <PageHeader title="SIP hisoblar" description="Telefon yoki softphone ulanadigan ichki raqamlar (extensions)" />
       <div className={styles.stack}>
-        <Card title="Yangi raqam">
+        <Card title="Yangi hisob">
           <ExtensionForm />
         </Card>
-        <Card title="Barcha raqamlar">
+        <Card title="Barcha hisoblar">
           <ExtensionGrid />
         </Card>
       </div>

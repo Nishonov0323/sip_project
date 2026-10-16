@@ -7,11 +7,11 @@ import { CallDetails } from './CallDetails'
 import { CallParty } from './CallParty'
 import styles from './CallHistoryTable.module.css'
 
-export function CallHistoryTable({ calls }: { calls: Call[] }) {
+export function CallHistoryTable({ calls, emptyText }: { calls: Call[]; emptyText?: string }) {
   const [openId, setOpenId] = useState<number | null>(null)
 
   if (calls.length === 0) {
-    return <EmptyState icon="clock">Qo'ng'iroqlar tarixi hozircha bo'sh</EmptyState>
+    return <EmptyState icon="clock">{emptyText ?? "Qo'ng'iroqlar tarixi hozircha bo'sh"}</EmptyState>
   }
 
   return (

@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # Qabul qiluvchiga qo'ng'iroq qilish shabloni ({number} o'rniga raqam qo'yiladi)
     sip_dial_template: str = "PJSIP/{number}"
 
+    # SIP hisoblar (Asterisk pjsip.conf shu faylni #tryinclude qiladi; Asterisk konteyneri bilan umumiy volume)
+    pjsip_accounts_file: str = "/data/pjsip/accounts.conf"
+
     # Audio fayllar va yozuvlar (Asterisk konteyneri bilan umumiy volume'lar)
     sounds_dir: str = "/data/sounds"
     recordings_dir: str = "/data/recordings"

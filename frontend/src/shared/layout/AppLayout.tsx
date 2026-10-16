@@ -26,7 +26,7 @@ export function AppLayout() {
               key={item.to}
               to={item.to}
               end={item.to === '/'}
-              className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
+              className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''} ${item.secondary ? styles.secondary : ''}`}
             >
               <Icon name={item.icon} size={19} />
               <span>{item.label}</span>

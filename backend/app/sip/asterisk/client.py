@@ -114,3 +114,10 @@ class AriClient:
 
     async def destroy_bridge(self, bridge_id: str) -> None:
         await self._request("DELETE", f"/bridges/{bridge_id}")
+
+    # --- konfiguratsiya ---
+    async def reload_module(self, module: str) -> None:
+        await self._request("PUT", f"/asterisk/modules/{module}")
+
+    async def list_endpoints(self, technology: str) -> list[dict]:
+        return await self._request("GET", f"/endpoints/{technology}")

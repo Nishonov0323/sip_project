@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import NotFoundError, ServiceUnavailableError
 from app.models.call import Call, TranscriptStatus
 from app.repositories.audio_repository import AudioRepository
-from app.repositories.call_repository import CallRepository
+from app.repositories.call_repository import CallFilter, CallRepository
 from app.repositories.extension_repository import ExtensionRepository
 from app.schemas.call import OriginateRequest, PlaybackRequest
 from app.services.transcription_service import TranscriptionService
@@ -42,8 +42,10 @@ class CallService:
     async def active_channels(self) -> list[ChannelInfo]:
         return await self._provider.list_active_channels()
 
-    async def history(self, limit: int, offset: int) -> list[Call]:
-        return await self._calls.list_recent(limit=limit, offset=offset)
+    async def history(
+        self, limit: int, offset: int, filters: CallFilter | None = None
+    ) -> list[Call]:
+        return await self._calls.list_recent(limit=limit, offset=offset, filters=filters)
 
     async def recording_path(self, call_id: int) -> Path:
         call = await self._get(call_id)

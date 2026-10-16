@@ -44,8 +44,8 @@ def get_audio_service(session: SessionDep) -> AudioService:
     return AudioService(session)
 
 
-def get_extension_service(session: SessionDep) -> ExtensionService:
-    return ExtensionService(session)
+def get_extension_service(session: SessionDep, provider: ProviderDep) -> ExtensionService:
+    return ExtensionService(session, provider)
 
 
 CallServiceDep = Annotated[CallService, Depends(get_call_service)]

@@ -22,7 +22,7 @@ POLL_SECONDS = 1.0
 
 
 class CampaignRunner:
-    """Kampaniyalarni fonda bajaradi: kontaktlarga ketma-ket (cheklangan parallellik bilan) qo'ng'iroq qiladi.
+    """Ommaviy qo'ng'iroqlarni fonda bajaradi: kontaktlarga ketma-ket (cheklangan parallellik bilan) qo'ng'iroq qiladi.
 
     Holat bazada saqlanadi; xotirada faqat ishlayotgan task'lar va faol kanallar turadi.
     """
@@ -49,9 +49,9 @@ class CampaignRunner:
             repo = CampaignRepository(session)
             campaign = await repo.get(campaign_id)
             if campaign is None:
-                raise NotFoundError("Kampaniya topilmadi")
+                raise NotFoundError("Ommaviy qo'ng'iroq topilmadi")
             if campaign.status != CampaignStatus.RUNNING.value:
-                raise ConflictError("Kampaniya allaqachon tugagan")
+                raise ConflictError("Ommaviy qo'ng'iroq allaqachon tugagan")
             campaign.status = CampaignStatus.CANCELLED.value
             await repo.save(campaign)
             await repo.cancel_pending(campaign_id)
@@ -223,7 +223,7 @@ class CampaignService:
     async def _get(self, campaign_id: int) -> Campaign:
         campaign = await self._repo.get(campaign_id)
         if campaign is None:
-            raise NotFoundError("Kampaniya topilmadi")
+            raise NotFoundError("Ommaviy qo'ng'iroq topilmadi")
         return campaign
 
     async def _read(self, campaign: Campaign) -> CampaignRead:

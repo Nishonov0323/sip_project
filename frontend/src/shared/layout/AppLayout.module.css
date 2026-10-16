@@ -27,6 +27,7 @@
 }
 
 .nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.secondary { margin-top: auto; }
 .link {
   position: relative;
   display: flex;

@@ -1,0 +1,98 @@
+.page { display: flex; flex-direction: column; gap: 22px; }
+.muted { margin: 4px 0 0; color: var(--muted); font-size: 0.875rem; display: flex; align-items: center; gap: 6px; }
+.errorText { margin: 0; padding: 14px 20px; color: var(--danger); }
+
+/* --- progress --- */
+.bar { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 999px; background: var(--gradient); transition: width 0.4s ease; }
+
+/* --- ro'yxat --- */
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.item {
+  display: grid;
+  grid-template-columns: auto minmax(160px, 1.2fr) minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+}
+.item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--primary); text-decoration: none; }
+.icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--info-bg); color: var(--info); }
+.itemInfo { display: flex; flex-direction: column; min-width: 0; }
+.itemInfo strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.itemInfo small,
+.itemProgress small { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+.itemProgress { display: flex; flex-direction: column; gap: 6px; }
+
+/* --- batafsil --- */
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.title { margin: 0; font-size: 1.25rem; }
+.headEnd { display: flex; align-items: center; gap: 12px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin: 20px 0 0; }
+.stats div { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--surface-2); }
+.stats dt { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.stats dd { margin: 4px 0 0; font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ok { color: var(--success); }
+.bad { color: var(--danger); }
+
+.tableWrap { overflow-x: auto; margin: 0 -8px; }
+.table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+.table td { padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.table tbody tr:last-child td { border-bottom: 0; }
+.clickable { cursor: pointer; }
+.clickable:hover,
+.open { background: var(--surface-2); }
+.person { display: flex; align-items: center; gap: 12px; }
+.person div { display: flex; flex-direction: column; line-height: 1.3; }
+.person small { color: var(--muted); font-variant-numeric: tabular-nums; }
+.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.rec { display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--primary); }
+.chevron { color: var(--muted); transition: transform 0.2s; }
+.chevronOpen { color: var(--muted); transform: rotate(180deg); }
+.detailsRow td { padding: 0; white-space: normal; background: var(--surface-2); }
+.details { display: grid; gap: 14px; padding: 16px 20px; }
+.transcript {
+  margin: 0;
+  padding: 14px 16px;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--surface);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.transcribe { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+
+/* --- ishga tushirish oynasi --- */
+.launch { display: flex; flex-direction: column; gap: 14px; }
+.summary {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--info-bg);
+  color: var(--info);
+  line-height: 1.5;
+}
+.summary svg { flex-shrink: 0; margin-top: 2px; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+.noAudio { display: flex; align-items: center; gap: 10px; margin: 0; }
+
+@media (max-width: 760px) {
+  .item { grid-template-columns: auto 1fr; }
+  .itemProgress { grid-column: 1 / -1; }
+}

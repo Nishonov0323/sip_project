@@ -29,3 +29,24 @@ export interface PlaybackRequest {
   to_number: string
   audio_id: number
 }
+
+export type StatusFilter = '' | 'ringing' | 'answered' | 'completed' | 'missed'
+
+/** Tarix filtrlari. Bo'sh qiymat — "filtr yo'q". Sanalar `YYYY-MM-DD` (mahalliy vaqt). */
+export interface CallFilters {
+  q: string
+  status: StatusFilter
+  kind: '' | CallKind
+  recording: '' | 'yes' | 'no'
+  dateFrom: string
+  dateTo: string
+}
+
+export const EMPTY_FILTERS: CallFilters = {
+  q: '',
+  status: '',
+  kind: '',
+  recording: '',
+  dateFrom: '',
+  dateTo: '',
+}

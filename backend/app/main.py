@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.services.call_event_service import CallEventService
+from app.services.account_sync import sync_on_startup
 from app.services.campaign_service import CampaignRunner
 from app.services.transcription_service import TranscriptionService
 from app.sip.factory import create_sip_provider
@@ -36,9 +38,11 @@ async def lifespan(app: FastAPI):
     app.state.campaign_runner = runner
     await provider.start()
     await runner.recover()
+    sync_task = asyncio.create_task(sync_on_startup(provider), name="sip-account-sync")
     try:
         yield
     finally:
+        sync_task.cancel()
         await runner.shutdown()
         await provider.stop()
 

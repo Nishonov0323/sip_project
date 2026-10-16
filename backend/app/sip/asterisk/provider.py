@@ -6,7 +6,8 @@ from app.core.exceptions import EndpointOfflineError, SipNotFoundError
 from app.sip.asterisk.call_router import CallRouter
 from app.sip.asterisk.client import AriClient
 from app.sip.asterisk.listener import AriEventListener
-from app.sip.base import ChannelInfo, SipProvider
+from app.sip.asterisk import accounts as pjsip_accounts
+from app.sip.base import ChannelInfo, SipAccount, SipProvider
 from app.sip.events import SipEvent
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ class AsteriskProvider(SipProvider):
         super().__init__()
         self._context = settings.sip_dialplan_context
         self._sound_prefix = settings.asterisk_sound_prefix
+        self._accounts_file = settings.pjsip_accounts_file
         self._client = AriClient(
             settings.ari_base_url, settings.ari_user, settings.ari_password, settings.ari_app
         )
@@ -64,7 +66,7 @@ class AsteriskProvider(SipProvider):
             endpoint = await self._client.get_endpoint("PJSIP", extension)
         except SipNotFoundError as exc:
             raise SipNotFoundError(
-                f"{extension} raqami Asterisk'da sozlanmagan (docker/asterisk/pjsip.conf)"
+                f"{extension} raqami Asterisk'da sozlanmagan (SIP hisoblar sahifasidan qo'shing)"
             ) from exc
         if endpoint.get("state") != "online":
             raise EndpointOfflineError(
@@ -102,3 +104,14 @@ class AsteriskProvider(SipProvider):
             )
             for ch in await self._client.list_channels()
         ]
+
+    async def sync_accounts(self, accounts: list[SipAccount]) -> None:
+        """Abonentlarni pjsip konfiguratsiya fayliga yozadi va Asterisk'ga qayta yuklashni buyuradi."""
+        await asyncio.to_thread(
+            pjsip_accounts.write_atomic, self._accounts_file, pjsip_accounts.render(accounts)
+        )
+        await self._client.reload_module("res_pjsip.so")
+
+    async def online_numbers(self) -> set[str]:
+        endpoints = await self._client.list_endpoints("PJSIP")
+        return {e["resource"] for e in endpoints if e.get("state") == "online"}

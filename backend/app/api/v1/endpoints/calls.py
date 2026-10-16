@@ -1,7 +1,11 @@
+from datetime import datetime
+from typing import Literal
+
 from fastapi import APIRouter, Query, status
 from fastapi.responses import FileResponse
 
 from app.api.deps import CallServiceDep
+from app.repositories.call_repository import CallFilter
 from app.schemas.call import (
     ActiveChannelRead,
     CallRead,
@@ -54,5 +58,19 @@ async def call_history(
     service: CallServiceDep,
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
+    q: str | None = Query(None, max_length=100, description="Raqam, audio nomi yoki matn"),
+    status: Literal["ringing", "answered", "completed", "missed"] | None = None,
+    kind: Literal["call", "playback"] | None = None,
+    has_recording: bool | None = None,
+    created_from: datetime | None = None,
+    created_before: datetime | None = None,
 ):
-    return await service.history(limit, offset)
+    filters = CallFilter(
+        q=q,
+        status=status,
+        kind=kind,
+        has_recording=has_recording,
+        created_from=created_from,
+        created_before=created_before,
+    )
+    return await service.history(limit, offset, filters)

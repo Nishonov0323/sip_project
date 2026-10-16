@@ -12,6 +12,15 @@ class ChannelInfo:
     callee: str = ""
 
 
+@dataclass(slots=True)
+class SipAccount:
+    """SIP serverda ro'yxatdan o'tadigan abonent (telefon/softphone shu bilan ulanadi)."""
+
+    number: str
+    display_name: str
+    password: str
+
+
 class SipProvider(ABC):
     """SIP server bilan ishlash uchun umumiy interfeys.
 
@@ -48,3 +57,11 @@ class SipProvider(ABC):
 
     @abstractmethod
     async def list_active_channels(self) -> list[ChannelInfo]: ...
+
+    @abstractmethod
+    async def sync_accounts(self, accounts: list[SipAccount]) -> None:
+        """SIP serverdagi abonentlarni berilgan ro'yxatga moslaydi (qo'shadi/o'chiradi/parolni yangilaydi)."""
+
+    @abstractmethod
+    async def online_numbers(self) -> set[str]:
+        """Hozir ro'yxatdan o'tgan (online) abonent raqamlari."""

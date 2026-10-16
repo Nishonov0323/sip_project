@@ -16,6 +16,11 @@ async def create_extension(data: ExtensionCreate, service: ExtensionServiceDep):
     return await service.create(data)
 
 
+@router.post("/{extension_id}/reset-password", response_model=ExtensionRead)
+async def reset_extension_password(extension_id: int, service: ExtensionServiceDep):
+    return await service.reset_password(extension_id)
+
+
 @router.delete("/{extension_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_extension(extension_id: int, service: ExtensionServiceDep) -> None:
     await service.delete(extension_id)
